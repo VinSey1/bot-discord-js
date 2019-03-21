@@ -101,7 +101,7 @@ function logModifMessage(ancienMessage, nouveauMessage, data){
         color: 3066993,
         title: '',
         author: {
-            name: "Message modifié de " + ancienMessage.author.username,
+            name: "Message modifié de " + ancienMessage.author.username + ' dans #' + ancienMessage.channel.name,
             icon_url: ancienMessage.author.avatarURL
         },
         description: '',
@@ -138,7 +138,7 @@ function logSuprMessage(message, data){
         color: 15158332,
         title: '',
         author: {
-            name: "Message supprimé de " + message.author.username,
+            name: "Message supprimé de " + message.author.username +' dans #' + message.channel.name,
             icon_url: message.author.avatarURL
         },
         description: message.content,
