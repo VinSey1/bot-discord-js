@@ -29,7 +29,7 @@ client.on('messageDelete', message => {
 });
 
 client.on('messageUpdate', (ancienMessage, nouveauMessage) => {
-    if(ancienMessage.guild != null && !(ancienMessage.content.startsWith(settings.prefix))){
+    if(ancienMessage.guild != null && !(ancienMessage.content.startsWith(settings.prefix)) && ancienMessage.content != nouveauMessage.content) {
         fs.readFile('listlogs.txt', function (err, data) {
             if (err) throw err;
             if(data.indexOf(ancienMessage.channel.guild.id) >= 0){
