@@ -8,7 +8,7 @@ var fs = require ('fs');
 
 client.on('ready', () => {
     console.log('Je suis en ligne !');
-    client.user.setActivity(settings.prefix + "help");
+    client.user.setActivity(settings.prefix + 'help');
 });
 
 client.on('message', message => {
@@ -39,7 +39,7 @@ client.on('messageUpdate', (ancienMessage, nouveauMessage) => {
     }
 });
 
-client.on("channelDelete", function(channel){
+client.on('channelDelete', function(channel){
     fs.readFile('listlogs.txt', function (err, data) {
         if (err) throw err;
         if(data.indexOf(channel.guild.id) >= 0){
@@ -72,14 +72,14 @@ function logChanSupr(channel, data){
         color: 3447003,
         title: '',
         author: {
-            name: "Channel " + channel.name + " supprimé",
+            name: 'Channel ' + channel.name + ' supprimé',
             icon_url: client.user.avatarURL
         },
         description: '',
         timestamp: new Date(),
         footer: {
             icon_url: client.user.avatarURL,
-            text: "© " + client.user.username
+            text: '© ' + client.user.username
         }
     }
     });
@@ -101,22 +101,22 @@ function logModifMessage(ancienMessage, nouveauMessage, data){
         color: 3066993,
         title: '',
         author: {
-            name: "Message modifié de " + ancienMessage.author.username + ' dans #' + ancienMessage.channel.name,
+            name: 'Message modifié de ' + ancienMessage.author.username + ' dans #' + ancienMessage.channel.name,
             icon_url: ancienMessage.author.avatarURL
         },
         description: '',
         fields: [{
-            name: "Ancien message",
+            name: 'Ancien message',
             value: ancienMessage.content
         },
         {
-            name: "Nouveau message",
+            name: 'Nouveau message',
             value: nouveauMessage.content
         }],
         timestamp: new Date(),
         footer: {
             icon_url: client.user.avatarURL,
-            text: "© " + client.user.username
+            text: '© ' + client.user.username
         }
     }
     });
@@ -138,14 +138,14 @@ function logSuprMessage(message, data){
         color: 15158332,
         title: '',
         author: {
-            name: "Message supprimé de " + message.author.username +' dans #' + message.channel.name,
+            name: 'Message supprimé de ' + message.author.username +' dans #' + message.channel.name,
             icon_url: message.author.avatarURL
         },
         description: message.content,
         timestamp: new Date(),
         footer: {
             icon_url: client.user.avatarURL,
-            text: "© " + client.user.username
+            text: '© ' + client.user.username
         }
     }
     });
@@ -156,19 +156,31 @@ function traiterMessage(message) {
     /*if(contenuMessage.startsWith('git-')){
         gestionnaireGit(contenuMessage, message);
     }*/
-    if(contenuMessage.startsWith('logs-') && message.guild != null && message.member.hasPermission("ADMINISTRATOR")){
+    if(contenuMessage.startsWith('logs-') && message.guild != null && message.member.hasPermission('ADMINISTRATOR')){
         gestionnaireLogs(contenuMessage, message);
     }
     if(contenuMessage == 'help'){
-        message.author.send('Commandes : \n' +
-            '```' + 
-            settings.prefix + 'logs-enable :\n' +
-            'Active les logs du serveur dans le channel actuel (messages supprimés/modifiés).\n' +
-            settings.prefix + 'logs-disable :\n' +
-            'Désactive les logs du serveur (à utiliser dans le channel où les logs sont activés).```\n' +
-            '\:warning: Supprimer le channel contenant les logs sans les désactiver au préalable désactive le suivi des logs. \:warning:\n\n' +
-            'Si jamais vous souhaitez ajouter ' + client.user.username + ' sur votre serveur, suivez le lien ci-dessous :\n' +
-            '<https://discordapp.com/oauth2/authorize?client_id=' + settings.id + '&scope=bot>');
+        message.author.send({embed: {
+                color: 15158332,
+                title: 'Manuel d\'aide de ' + client.user.username,
+                author: {
+                    name: '',
+                    icon_url: ''
+                },
+                description: 'Si jamais vous souhaitez ajouter le bot sur votre serveur, merci de suivre [ce lien](https://discordapp.com/oauth2/authorize?client_id=' + settings.id + '&scope=bot>).' ,
+                fields: [{
+                    name: 'Logs',
+                    value: '`' + settings.prefix + 'logs-enable` : Active les logs du serveur dans le channel actuel (messages supprimés/modifiés).\n' +
+                        '`' + settings.prefix + 'logs-disable` : Désactive les logs du serveur (à utiliser dans le channel où les logs sont activés).\n' +
+                        '\:warning: **Supprimer le channel où les logs sont activés désactive le suivi des logs.** \:warning:'
+                }],
+                timestamp: new Date(),
+                footer: {
+                    icon_url: client.user.avatarURL,
+                    text: '© ' + client.user.username
+                }
+            }
+            });
     }
     if(message.guild != null){
         message.delete();
@@ -184,11 +196,11 @@ function gestionnaireLogs(contenuMessage, message){
                 fs.appendFile('listlogs.txt', message.channel.guild.id + ':' + message.channel.id + '\n', function (err) {
                     if (err) throw err;
                 })
-                message.channel.send("Fonction des logs activée.");
+                message.channel.send('Fonction des logs activée.');
             } else {
-                message.channel.send("Les logs sont déjà activés sur ce serveur.\n" + 
-                    "Si vous voulez changer le channel de logs, désactivez les logs via la commande **" + settings.prefix + "logs-disable** " +
-                    "et réactivez-les dans le channel souhaité.");
+                message.channel.send('Les logs sont déjà activés sur ce serveur.\n' + 
+                    'Si vous voulez changer le channel de logs, désactivez les logs via la commande **' + settings.prefix + 'logs-disable** ' +
+                    'et réactivez-les dans le channel souhaité.');
             }
         });
     }
@@ -201,13 +213,13 @@ function gestionnaireLogs(contenuMessage, message){
                 fs.writeFile('listlogs.txt', content, function (err) {
                     if(err) throw err
                 });
-                message.channel.send("Fonction des logs désactivée.");
+                message.channel.send('Fonction des logs désactivée.');
             } else {
                 if(data.indexOf(message.channel.guild.id) >= 0){
-                    message.channel.send("Veuillez utiliser cette commande dans le channel des logs.");
+                    message.channel.send('Veuillez utiliser cette commande dans le channel des logs.');
                 } else {
-                    message.channel.send("Les logs ne sont pas activés sur ce serveur.\n" + 
-                    "Si vous voulez activer les logs, activez-les dans le channel voulu via la commande **" + settings.prefix + "logs-enable**.");
+                    message.channel.send('Les logs ne sont pas activés sur ce serveur.\n' + 
+                    'Si vous voulez activer les logs, activez-les dans le channel voulu via la commande **' + settings.prefix + 'logs-enable**.');
                 }
             }
         });
