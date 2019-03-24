@@ -18,7 +18,7 @@ client.on('message', message => {
 });
 
 client.on('messageDelete', message => {
-    if(message.guild != null && !(message.content.startsWith(settings.prefix)) && message.author.id != settings.id){
+    if(message.guild != null && !(message.content.startsWith(settings.prefix)) && message.author.id != settings.id && message.content != ''){
         fs.readFile('listlogs.txt', function (err, data) {
             if (err) throw err;
             if(data.indexOf(message.channel.guild.id) >= 0){
