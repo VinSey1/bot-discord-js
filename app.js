@@ -42,20 +42,21 @@ client.on('messageUpdate', (ancienMessage, nouveauMessage) => {
 client.on('channelDelete', function(channel){
     fs.readFile('listlogs.txt', function (err, data) {
         if (err) throw err;
-        if(data.indexOf(channel.guild.id) >= 0){
+        //if(data.indexOf(channel.guild.id) >= 0){
             if(data.indexOf(channel.guild.id + ':' + channel.id + '\n') >= 0){
                 var content = data.toString();
                 content = content.replace(channel.guild.id + ':' + channel.id + '\n', '');
                 fs.writeFile('listlogs.txt', content, function (err) {
                     if(err) throw err
                 });
-            } else {
+            } /*else {
                 logChanSupr(channel, data);
-            }
-        }
+            }*/
+        //}
     });
 });
 
+/*
 function logChanSupr(channel, data){
     var listlogs = data.toString().split('\n');;
     var chan = null;
@@ -84,7 +85,7 @@ function logChanSupr(channel, data){
     }
     });
 }
-
+*/
 function logModifMessage(ancienMessage, nouveauMessage, data){
     var listlogs = data.toString().split('\n');;
     var chan = null;
