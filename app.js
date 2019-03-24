@@ -168,7 +168,7 @@ function traiterMessage(message) {
                     name: '',
                     icon_url: ''
                 },
-                description: 'Si jamais vous souhaitez ajouter le bot sur votre serveur, merci de suivre [ce lien](https://discordapp.com/oauth2/authorize?client_id=' + settings.id + '&scope=bot>).' ,
+                description: 'Si jamais vous souhaitez ajouter le bot sur votre serveur, merci de suivre [ce lien](https://discordapp.com/oauth2/authorize?client_id=' + settings.id + '&scope=bot&permissions=' + settings.permissions + ').' ,
                 fields: [{
                     name: 'Logs',
                     value: '`' + settings.prefix + 'logs-enable` : Active les logs du serveur dans le channel actuel (messages supprimés/modifiés).\n' +
