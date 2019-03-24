@@ -18,7 +18,7 @@ client.on('message', message => {
 });
 
 client.on('messageDelete', message => {
-    if(message.guild != null && !(message.content.startsWith(settings.prefix))){
+    if(message.guild != null && !(message.content.startsWith(settings.prefix)) && message.author.id != settings.id){
         fs.readFile('listlogs.txt', function (err, data) {
             if (err) throw err;
             if(data.indexOf(message.channel.guild.id) >= 0){
@@ -29,7 +29,8 @@ client.on('messageDelete', message => {
 });
 
 client.on('messageUpdate', (ancienMessage, nouveauMessage) => {
-    if(ancienMessage.guild != null && !(ancienMessage.content.startsWith(settings.prefix)) && ancienMessage.content != nouveauMessage.content) {
+    if(ancienMessage.guild != null && !(ancienMessage.content.startsWith(settings.prefix)) && ancienMessage.content != nouveauMessage.content
+        && ancienMessage.author.id != settings.id) {
         fs.readFile('listlogs.txt', function (err, data) {
             if (err) throw err;
             if(data.indexOf(ancienMessage.channel.guild.id) >= 0){
